@@ -9,6 +9,6 @@
 * Swagger API http://localhost:8080/rest/swagger-ui/index.html?configUrl=/rest/v3/api-docs/swagger-config
 * H2 Console http://localhost:8080/rest/h2-console
 
-#Credentials
+# Credentials
 * H2 user=trainee; password=oneNicePassword
 * Rest API basic auth user=trainee; password=springBoot
