@@ -4,13 +4,12 @@ import eu.accesa.springboottraining.dto.InternDto;
 import eu.accesa.springboottraining.service.InternService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/interns")
@@ -18,16 +17,43 @@ import java.util.List;
 @Tag(name = "Interns")
 public class InternController {
 
-    @Autowired
-    private InternService internService;
+    private final InternService internService;
 
-    @GetMapping()
-    public List<InternDto> getInterns() {
-        return internService.findAllInterns();
+    public InternController(InternService internService) {
+        this.internService = internService;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public InternDto save(@RequestBody InternDto internDto) {
+        return internService.save(internDto);
+    }
+
+    @GetMapping
+    public List<InternDto> findInterns() {
+        return internService.findAll();
     }
 
     @GetMapping("/{id}")
-    public InternDto getInternById(final @PathVariable Long id) {
-        return internService.findInternById(id);
+    public InternDto findById(@PathVariable Long id) {
+        Optional<InternDto> internDto = internService.findById(id);
+        return internDto.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
+    @GetMapping("/by")
+    public InternDto findByName(@RequestParam(value = "name") String name) {
+        Optional<InternDto> internDto = internService.findByName(name);
+        return internDto.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping
+    public InternDto update(@RequestBody InternDto internDto) {
+        return internService.save(internDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        internService.deleteById(id);
+    }
+
 }
