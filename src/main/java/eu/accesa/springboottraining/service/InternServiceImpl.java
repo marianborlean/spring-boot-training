@@ -21,6 +21,7 @@ public class InternServiceImpl implements InternService{
 
     @Override
     public InternDto findInternById(final Long id) {
-        return from(internRepository.getOne(id));
+        final var intern = internRepository.findByIdNativeNoEntity(id);
+        return from(intern);
     }
 }

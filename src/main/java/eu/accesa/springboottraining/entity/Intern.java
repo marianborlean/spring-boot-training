@@ -3,6 +3,7 @@ package eu.accesa.springboottraining.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -12,7 +13,7 @@ public class Intern {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy=SEQUENCE, generator="interns_sequence_generator")
+    @GeneratedValue(strategy = SEQUENCE, generator = "interns_sequence_generator")
     @SequenceGenerator(name = "interns_sequence_generator", sequenceName = "INTERNS_SEQUENCE", allocationSize = 1)
     private Long id;
     @Column(name = "NAME")
@@ -21,6 +22,12 @@ public class Intern {
     private String email;
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate birthDate;
+    @ManyToMany
+    @JoinTable(
+            name = "INTERNS_HOBBIES",
+            joinColumns = @JoinColumn(name = "INTERN_ID"),
+            inverseJoinColumns = @JoinColumn(name = "HOBBY_ID"))
+    private Set<Hobby> hobbies;
 
     public Long getId() {
         return id;
@@ -28,6 +35,14 @@ public class Intern {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(Set<Hobby> hobbies) {
+        this.hobbies = hobbies;
     }
 
     public String getName() {
