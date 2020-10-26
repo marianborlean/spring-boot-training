@@ -19,6 +19,8 @@ public class Intern {
     private String name;
     @Column(name = "EMAIL")
     private String email;
+    @Column(name = "PASSWORD")
+    private String password;
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate birthDate;
 
@@ -46,6 +48,10 @@ public class Intern {
         this.email = email;
     }
 
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }
@@ -62,6 +68,7 @@ public class Intern {
         return Objects.equals(id, intern.id) &&
                 Objects.equals(name, intern.name) &&
                 Objects.equals(email, intern.email) &&
+                Objects.equals(password, intern.password) &&
                 Objects.equals(birthDate, intern.birthDate);
     }
 

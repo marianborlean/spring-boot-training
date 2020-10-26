@@ -20,6 +20,7 @@ public class InternMapper {
         internDto.setId(intern.getId());
         internDto.setName(intern.getName());
         internDto.setBirthDate(intern.getBirthDate());
+        internDto.setPassword(intern.getPassword());
         internDto.setEmail(intern.getEmail());
         return internDto;
     }

@@ -7,6 +7,7 @@ public class InternDto {
     private Long id;
     private String name;
     private String email;
+    private String password;
     private LocalDate birthDate;
 
     public Long getId() {
@@ -40,4 +41,8 @@ public class InternDto {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 }

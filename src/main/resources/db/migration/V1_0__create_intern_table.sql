@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS INTERNS (
     ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     NAME varchar(20),
     EMAIL varchar(50),
+    PASSWORD varchar(50),
     DATE_OF_BIRTH timestamp
  
 )

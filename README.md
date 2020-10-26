@@ -12,3 +12,6 @@
 # Credentials
 * H2 user=trainee; password=oneNicePassword
 * Rest API basic auth user=trainee; password=springBoot
+
+# Different useful commands
+To start the application using maven: mvnw spring-boot:run
