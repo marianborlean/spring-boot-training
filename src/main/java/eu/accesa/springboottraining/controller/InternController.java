@@ -26,11 +26,6 @@ public class InternController {
         return internService.findAllInterns();
     }
 
-    @GetMapping("/hello")
-    public String helloWorld(){
-        return "Hello world from Accesa";
-    }
-
     @GetMapping("/{id}")
     public InternDto getInternById(final @PathVariable Long id) {
         return internService.findInternById(id);

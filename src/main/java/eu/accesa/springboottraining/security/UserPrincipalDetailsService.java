@@ -1,6 +1,6 @@
 package eu.accesa.springboottraining.security;
 
-import eu.accesa.springboottraining.db.InternRepository;
+import eu.accesa.springboottraining.dao.InternRepository;
 import eu.accesa.springboottraining.entity.Intern;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

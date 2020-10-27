@@ -4,15 +4,13 @@ import eu.accesa.springboottraining.entity.Intern;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
     private Intern intern;
 
-    public UserPrincipal(Intern intern){
+    public UserPrincipal(Intern intern) {
         this.intern = intern;
     }
 
@@ -27,7 +25,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.intern.getName();
     }
 
     @Override
@@ -50,7 +48,4 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-    public String getName() {
-        return this.intern.getName();
-    }
 }

@@ -1,6 +1,6 @@
 package eu.accesa.springboottraining.service;
 
-import eu.accesa.springboottraining.dao.InternRepositoryAuxiliar;
+import eu.accesa.springboottraining.dao.InternRepository;
 import eu.accesa.springboottraining.dto.InternDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,15 @@ import java.util.List;
 public class InternServiceImpl implements InternService{
 
     @Autowired
-    private InternRepositoryAuxiliar internRepositoryAuxiliar;
+    private InternRepository internRepository;
 
     @Override
     public List<InternDto> findAllInterns() {
-        return from(internRepositoryAuxiliar.findAll());
+        return from(internRepository.findAll());
     }
 
     @Override
     public InternDto findInternById(final Long id) {
-        return from(internRepositoryAuxiliar.getOne(id));
+        return from(internRepository.getOne(id));
     }
 }

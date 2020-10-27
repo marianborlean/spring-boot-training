@@ -1,7 +1,6 @@
 package eu.accesa.springboottraining.security;
 
-import eu.accesa.springboottraining.db.InternRepository;
-import eu.accesa.springboottraining.entity.Intern;
+import eu.accesa.springboottraining.dao.InternRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
