@@ -42,13 +42,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX,"");
+                .replace(JwtProperties.TOKEN_PREFIX,"").replace(JwtProperties.SECRET, "");
         if (token != null) {
             // parse the token and validate it
-
-            String userName = "Cristina Popescu";
-
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, "password");
+            String[] credentials = token.split("-");
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(credentials[0], credentials[1]);
             System.out.println(auth);
             return auth;
             }

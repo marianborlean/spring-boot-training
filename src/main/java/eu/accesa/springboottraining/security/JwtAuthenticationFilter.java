@@ -40,7 +40,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 credentials.getPassword(),
                 new ArrayList<>());
 
-        System.out.println(authenticationToken);
 
         // Authenticate user
         try{
@@ -58,12 +57,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // Grab principal
         Intern intern = new Intern();
-        intern.setName("Cristina Popescu");
+        intern.setName("Vlad Petrean");
         intern.setPassword("password");
         UserPrincipal principal = new UserPrincipal(intern);
 
         // Create JWT Token
-        String token = JwtProperties.SECRET + principal.getUsername()+principal.getPassword();
+        String token = JwtProperties.SECRET + principal.getUsername()+"-"+principal.getPassword();
         System.out.print("TOKEN: "+ token);
         // Add token in response
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX +  token);
