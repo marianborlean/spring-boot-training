@@ -1,6 +1,10 @@
 package eu.accesa.springboottraining.security;
 
 import eu.accesa.springboottraining.dao.InternRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
+
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private InternRepository internRepository;
+    private JwtParser parser;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, InternRepository internRepository) {
         super(authenticationManager);
         this.internRepository = internRepository;
+        this.parser = Jwts.parser()
+                .setSigningKey(JwtProperties.SECRET.getBytes());
     }
 
     @Override
@@ -33,25 +42,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         // If header is present, try grab user principal from database and perform authorization
-        Authentication authentication = getUsernamePasswordAuthentication(request);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        tokenAuthorization(request, response);
 
-        // Continue filter execution
-        chain.doFilter(request, response);
     }
 
-    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
+    private void tokenAuthorization(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX,"").replace(JwtProperties.SECRET, "");
+                .replace(JwtProperties.TOKEN_PREFIX, "").replace(JwtProperties.SECRET, "");
         if (token != null) {
-            // parse the token and validate it
-            String[] credentials = token.split("-");
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(credentials[0], credentials[1]);
-            System.out.println(auth);
-            return auth;
+            Jws<Claims> claims = parser.parseClaimsJws(token);
+            if ((claims.getBody().getAudience().equals("internship")) && (claims.getBody().getIssuer().equals("Vlad Petrean"))) {
+                return ;
             }
-
-        return null;
         }
-
+        response.sendError(SC_FORBIDDEN, "You don't have the rights to access this url");
+        return;
+    }
 }
