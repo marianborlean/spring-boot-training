@@ -19,11 +19,7 @@ public class SecurityTestController {
 
 
     @GetMapping()
-    private HashMap TestAuthorization(HttpServletRequest request){
-        HashMap<String, String> responseMap = new HashMap<String, String>();
-        responseMap.put("Authorization", "Success");
-        responseMap.put("JWT", request.getHeader("Authorization"));
-        responseMap.put("Message", "You are authorized to see this message. Hip hip Huraaaaa");
-        return responseMap;
+    private String TestAuthorization(HttpServletRequest request){
+        return "";
     }
 }
