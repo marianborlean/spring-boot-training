@@ -42,20 +42,24 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         // If header is present, try grab user principal from database and perform authorization
-        tokenAuthorization(request, response);
+        Authentication authentication = getUsernamePasswordAuthentication(request);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Continue filter execution
+        chain.doFilter(request, response);
     }
 
-    private void tokenAuthorization(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX, "").replace(JwtProperties.SECRET, "");
+                .replace(JwtProperties.TOKEN_PREFIX,"").replace(JwtProperties.SECRET, "");
         if (token != null) {
-            Jws<Claims> claims = parser.parseClaimsJws(token);
-            if ((claims.getBody().getAudience().equals("internship")) && (claims.getBody().getIssuer().equals("Vlad Petrean"))) {
-                return ;
-            }
+            // parse the token and validate it
+            String[] credentials = token.split("-");
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(credentials[0], credentials[1]);
+            return auth;
+
         }
-        response.sendError(SC_FORBIDDEN, "You don't have the rights to access this url");
-        return;
+        return null;
+
     }
 }

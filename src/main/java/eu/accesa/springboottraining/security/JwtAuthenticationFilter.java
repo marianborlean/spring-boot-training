@@ -12,16 +12,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
-
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -48,6 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 credentials.getPassword(),
                 new ArrayList<>());
 
+        System.out.println(authenticationToken);
 
         // Authenticate user
         try{
@@ -63,24 +56,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
-
-        //Grab the credentials
-        String userName = authResult.getName();
-
+        String username = authResult.getName();
         // Create JWT Token
-        //  JwtProperties.SECRET + principal.getUsername()+"-"+principal.getPassword();
-        String token = generateJwt("internship", "training", userName, JwtProperties.SECRET);
+        String token = JwtProperties.SECRET + username+"-"+ "password";
         System.out.print("TOKEN: "+ token);
         // Add token in response
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX +  token);
     }
-
-    public static String generateJwt(String audience, String subject, String issuer, String secret) {
-        JwtBuilder builder = Jwts.builder();
-
-        builder.setSubject(subject).setIssuer(issuer).setAudience(audience);
-
-        return builder.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
-    }
 }
+
 
